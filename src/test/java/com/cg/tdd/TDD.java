@@ -32,4 +32,20 @@ public class TDD {
         long fare = cabService.fare(null,0);
         Assert.assertEquals(0,fare);
     }
+    @Test
+    public void givenManyRides_shouldReturnAverageFare() {
+        CabService cabService = new CabService();
+        cabService.fare(5,0);
+        cabService.fare(10,1);
+        cabService.fare(5,9);
+        Assert.assertEquals(40.0,cabService.averageFare(),0);
+    }
+    @Test
+    public void givenManyRides_shouldReturnNumberOfRides() {
+        CabService cabService = new CabService();
+        cabService.fare(5,0);
+        cabService.fare(10,1);
+        cabService.fare(5,9);
+        Assert.assertEquals(3,cabService.numberOfRides);
+    }
 }
