@@ -2,7 +2,7 @@ package com.cg.tdd;
 
 public class CabService {
 
-    public long aggregateFare = 0;
+    public long aggregateFare = 0,aggregateMinutes=0,aggregateKilometers=0;
     public long fare(Integer minutes, Integer kilometers){
         try {
             long fare = minutes + kilometers * 10;
