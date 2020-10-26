@@ -8,9 +8,9 @@ public class TDD {
     @Test
     public void givenMinutesKilometers_shouldReturnFare() {
         CabService cabService = new CabService();
-        cabService.aggregateFare(5,0);
-        cabService.aggregateFare(10,1);
-        long fare = cabService.aggregateFare(5,9);
-        Assert.assertEquals(120,fare);
+        cabService.fare(5,0);
+        cabService.fare(10,1);
+        cabService.fare(5,9);
+        Assert.assertEquals(120,cabService.aggregateFare);
     }
 }
