@@ -4,25 +4,42 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class CabService {
-
+    public enum Ride_type{
+        NORMAL,PREMIUM;
+    }
     public long aggregateFare = 0,numberOfRides=0;
     public TreeMap<String,ArrayList<Long>> ridesMap = new TreeMap<>();
     public ArrayList<Long> rides;
-    public long fare(String userId,Integer minutes, Integer kilometers){
+    public long fare(String userId,Ride_type ride_type,Integer minutes, Integer kilometers){
         ArrayList<Long> rides = new ArrayList<>();
         try {
-            long fare = calculateFare(minutes,kilometers);
-            if(ridesMap.containsKey(userId)) {
-                rides = ridesMap.get(userId);
-                rides.add(fare);
-                ridesMap.put(userId, rides);
+            long fare=0;
+            if(ride_type==Ride_type.NORMAL) {
+                fare = calculateNormalFare(minutes, kilometers);
+                if (ridesMap.containsKey(userId)) {
+                    rides = ridesMap.get(userId);
+                    rides.add(fare);
+                    ridesMap.put(userId, rides);
+                } else {
+                    rides.add(fare);
+                    ridesMap.put(userId, rides);
+                }
+                aggregateFare += fare;
+                numberOfRides++;
             }
             else{
-                rides.add(fare);
-                ridesMap.put(userId, rides);
+                fare = calculatePremiumFare(minutes, kilometers);
+                if (ridesMap.containsKey(userId)) {
+                    rides = ridesMap.get(userId);
+                    rides.add(fare);
+                    ridesMap.put(userId, rides);
+                } else {
+                    rides.add(fare);
+                    ridesMap.put(userId, rides);
+                }
+                aggregateFare += fare;
+                numberOfRides++;
             }
-            aggregateFare+=fare;
-            numberOfRides++;
             return fare;
         }catch(NullPointerException e){
             e.printStackTrace();
@@ -30,10 +47,20 @@ public class CabService {
         }
     }
 
-    public long calculateFare(Integer minutes, Integer kilometers) throws NullPointerException{
+    public long calculateNormalFare(Integer minutes, Integer kilometers) throws NullPointerException{
         long fare = minutes + kilometers * 10;
         if (fare < 5) {
             return 5;
+        }
+
+        else {
+            return fare;
+        }
+    }
+    public long calculatePremiumFare(Integer minutes, Integer kilometers) throws NullPointerException{
+        long fare = minutes*2 + kilometers * 15;
+        if (fare < 20) {
+            return 20;
         }
 
         else {
